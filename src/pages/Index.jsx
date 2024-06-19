@@ -153,7 +153,7 @@ const Index = () => {
           </VStack>
         </Box>
         {/* AI Assistance Area */}
-        <Box flex="1" p={4}>
+        <Box flex="1" p={4} overflowY="auto" maxHeight="400px">
           <Box p={4} borderBottom="1px solid #ccc" style={profileSectionStyle}>
             <Heading size="md" mb={2}>Customer Profile</Heading>
             <Text><strong>Username:</strong> {mockProfile.username}</Text>
@@ -193,7 +193,7 @@ const Index = () => {
             {aiSuggestions.map((suggestion, index) => (
               <Box key={index} display="flex" alignItems="center">
                 <Tooltip label={knowledgeBase[index]} aria-label="Knowledge Base Info">
-                  <Button variant="outline" size="sm" onClick={() => setUserMessage(suggestion)}>
+                  <Button variant="outline" size="sm" width="100%" onClick={() => setUserMessage(suggestion)}>
                     {suggestion}
                   </Button>
                 </Tooltip>
