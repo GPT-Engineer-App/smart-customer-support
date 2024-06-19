@@ -21,6 +21,7 @@ const Index = () => {
   const [userDemandAnalysis, setUserDemandAnalysis] = useState("User is looking for a refund due to a defective product.");
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [autoReply, setAutoReply] = useState(false);
+  const [threshold, setThreshold] = useState(0.5);
 
   const mockProfile = {
     username: "JohnDoe",
@@ -35,6 +36,11 @@ const Index = () => {
     if (userMessage.trim() !== "") {
       setChatHistory([...chatHistory, { sender: "user", message: userMessage }]);
       setUserMessage("");
+
+      if (autoReply && evaluateSuggestion(userMessage) > threshold) {
+        // Logic to send auto-reply
+        setChatHistory([...chatHistory, { sender: "service", message: "Auto-reply message based on threshold." }]);
+      }
     }
   };
 
@@ -58,6 +64,11 @@ const Index = () => {
 
   const handleToggleAutoReply = () => {
     setAutoReply(!autoReply);
+  };
+
+  const evaluateSuggestion = (message) => {
+    // Placeholder logic for evaluating the suggestion
+    return Math.random(); // Replace with actual evaluation logic
   };
 
   const customerMessageStyle = {
@@ -218,6 +229,20 @@ const Index = () => {
             <Flex align="center">
               <Text mr={2}>Automatic Replies</Text>
               <Switch isChecked={autoReply} onChange={handleToggleAutoReply} />
+            </Flex>
+            <Flex align="center" mt={4}>
+              <Tooltip label="Set the threshold for auto-reply. Auto-reply will be triggered if the evaluation score exceeds this value." aria-label="Threshold Info">
+                <Text mr={2}>Threshold</Text>
+              </Tooltip>
+              <Input
+                type="number"
+                value={threshold}
+                onChange={(e) => setThreshold(parseFloat(e.target.value))}
+                min={0}
+                max={1}
+                step={0.01}
+                defaultValue={0.5}
+              />
             </Flex>
           </ModalBody>
           <ModalFooter>
