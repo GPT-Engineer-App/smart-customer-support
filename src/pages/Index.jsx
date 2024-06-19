@@ -1,10 +1,13 @@
-import { Box, Container, Flex, VStack, Textarea, Button, Text, Heading, List, ListItem, Tooltip, IconButton } from "@chakra-ui/react";
+import { Box, Container, Flex, VStack, Textarea, Button, Text, Heading, List, ListItem, Tooltip, IconButton, Input, Icon } from "@chakra-ui/react";
 import { useState } from "react";
-import { FaMagic } from "react-icons/fa";
+import { FaMagic, FaMicrophone, FaImage } from "react-icons/fa";
 
 const Index = () => {
   const [userMessage, setUserMessage] = useState("");
-  const [chatHistory, setChatHistory] = useState([]);
+  const [chatHistory, setChatHistory] = useState([
+    { sender: "customer", message: "Hello, I need help with my order." },
+    { sender: "service", message: "Sure, I'd be happy to help. Can you provide your order number?" }
+  ]);
   const [aiSuggestions, setAiSuggestions] = useState(["Hello! How can I assist you today?", "Can you provide more details?", "Thank you for reaching out!"]);
   const [knowledgeBase, setKnowledgeBase] = useState([
     "Knowledge base info for suggestion 1",
@@ -33,6 +36,19 @@ const Index = () => {
     console.log("Optimizing response for suggestion:", aiSuggestions[index]);
   };
 
+  const handleVoiceMessage = () => {
+    // Logic to handle voice message
+    console.log("Voice message feature is not implemented yet.");
+  };
+
+  const handleImageUpload = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      // Logic to handle image upload
+      console.log("Image uploaded:", file.name);
+    }
+  };
+
   return (
     <Container maxW="container.xl" height="100vh" display="flex" flexDirection="column" justifyContent="center" alignItems="center">
       <Flex width="100%" height="80%" border="1px solid #ccc" borderRadius="md" overflow="hidden">
@@ -52,9 +68,34 @@ const Index = () => {
               placeholder="Type your message here..."
               size="sm"
             />
-            <Button onClick={handleSendMessage} colorScheme="blue" size="sm">
-              Send
-            </Button>
+            <Flex>
+              <Button onClick={handleSendMessage} colorScheme="blue" size="sm">
+                Send
+              </Button>
+              <IconButton
+                icon={<FaMicrophone />}
+                size="sm"
+                ml={2}
+                onClick={handleVoiceMessage}
+                aria-label="Send Voice Message"
+              />
+              <Input
+                type="file"
+                accept="image/*"
+                display="none"
+                onChange={handleImageUpload}
+                id="image-upload"
+              />
+              <label htmlFor="image-upload">
+                <IconButton
+                  icon={<FaImage />}
+                  size="sm"
+                  ml={2}
+                  as="span"
+                  aria-label="Upload Image"
+                />
+              </label>
+            </Flex>
           </VStack>
         </Box>
         {/* AI Assistance Area */}
