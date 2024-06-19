@@ -1,6 +1,8 @@
-import { Box, Container, Flex, VStack, Textarea, Button, Text, Heading, List, ListItem, Tooltip, IconButton, Input, Icon } from "@chakra-ui/react";
+import { Box, Container, Flex, VStack, Textarea, Button, Text, Heading, List, ListItem, Tooltip, IconButton, Input, Icon, Modal, ModalOverlay, ModalContent, ModalHeader, ModalFooter, ModalBody, ModalCloseButton, Switch } from "@chakra-ui/react";
 import { useState } from "react";
-import { FaMagic, FaMicrophone, FaImage } from "react-icons/fa";
+import { FaMagic, FaMicrophone, FaImage, FaCog } from "react-icons/fa";
+import { Line } from 'react-chartjs-2';
+import { useDisclosure } from "@chakra-ui/react";
 
 const Index = () => {
   const [userMessage, setUserMessage] = useState("");
@@ -14,6 +16,10 @@ const Index = () => {
     "Knowledge base info for suggestion 2",
     "Knowledge base info for suggestion 3"
   ]);
+  const [sentimentData, setSentimentData] = useState([0, 1, 0, -1, 0, 1, 0]);
+  const [userDemandAnalysis, setUserDemandAnalysis] = useState("User is looking for a refund due to a defective product.");
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const [autoReply, setAutoReply] = useState(false);
 
   const mockProfile = {
     username: "JohnDoe",
@@ -49,6 +55,10 @@ const Index = () => {
     }
   };
 
+  const handleToggleAutoReply = () => {
+    setAutoReply(!autoReply);
+  };
+
   const customerMessageStyle = {
     backgroundColor: "#e0f7fa",
     borderRadius: "10px",
@@ -80,7 +90,16 @@ const Index = () => {
   };
 
   return (
-    <Container maxW="container.xl" height="100vh" display="flex" flexDirection="column" justifyContent="center" alignItems="center">
+    <Container maxW="container.xl" height="100vh" display="flex" flexDirection="column" justifyContent="center" alignItems="center" position="relative">
+      <IconButton
+        icon={<FaCog />}
+        size="sm"
+        position="absolute"
+        top="10px"
+        right="10px"
+        onClick={onOpen}
+        aria-label="Settings"
+      />
       <Flex width="100%" height="80%" border="1px solid #ccc" borderRadius="md" overflow="hidden">
         {/* Chatbox Area */}
         <Box flex="2" p={4} borderRight="1px solid #ccc">
@@ -143,6 +162,30 @@ const Index = () => {
                 <ListItem key={index} style={orderListStyle}>{order}</ListItem>
               ))}
             </List>
+            <Heading size="sm" mt={4} mb={2}>Sentiment Curve</Heading>
+            <Line
+              data={{
+                labels: sentimentData.map((_, index) => `Message ${index + 1}`),
+                datasets: [
+                  {
+                    label: 'Sentiment',
+                    data: sentimentData,
+                    fill: false,
+                    backgroundColor: 'rgba(75,192,192,0.4)',
+                    borderColor: 'rgba(75,192,192,1)',
+                  },
+                ],
+              }}
+              options={{
+                scales: {
+                  y: {
+                    beginAtZero: true,
+                  },
+                },
+              }}
+            />
+            <Heading size="sm" mt={4} mb={2}>User Demand Analysis</Heading>
+            <Text>{userDemandAnalysis}</Text>
           </Box>
           <Text fontSize="xl" mb={4}>AI Suggestions</Text>
           <VStack spacing={4} align="stretch">
@@ -165,6 +208,24 @@ const Index = () => {
           </VStack>
         </Box>
       </Flex>
+      <Modal isOpen={isOpen} onClose={onClose}>
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>Settings</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody>
+            <Flex align="center">
+              <Text mr={2}>Automatic Replies</Text>
+              <Switch isChecked={autoReply} onChange={handleToggleAutoReply} />
+            </Flex>
+          </ModalBody>
+          <ModalFooter>
+            <Button colorScheme="blue" mr={3} onClick={onClose}>
+              Close
+            </Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
     </Container>
   );
 };
