@@ -1,6 +1,6 @@
-import { Box, Container, Flex, VStack, Textarea, Button, Text, Heading, List, ListItem, Tooltip, IconButton, Input, Icon, Modal, ModalOverlay, ModalContent, ModalHeader, ModalFooter, ModalBody, ModalCloseButton, Switch } from "@chakra-ui/react";
+import { Box, Container, Flex, VStack, Textarea, Button, Text, Heading, List, ListItem, Tooltip, IconButton, Input, Icon, Modal, ModalOverlay, ModalContent, ModalHeader, ModalFooter, ModalBody, ModalCloseButton, Switch, Slider, SliderTrack, SliderFilledTrack, SliderThumb, SliderMark } from "@chakra-ui/react";
 import Chart from 'chart.js/auto';
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { FaMagic, FaMicrophone, FaImage, FaCog } from "react-icons/fa";
 import { Line } from 'react-chartjs-2';
 import { useDisclosure } from "@chakra-ui/react";
@@ -21,6 +21,12 @@ const Index = () => {
   const [userDemandAnalysis, setUserDemandAnalysis] = useState("User is looking for a refund due to a defective product.");
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [autoReply, setAutoReply] = useState(false);
+  const [threshold, setThreshold] = useState(50);
+
+  useEffect(() => {
+    if (threshold < 0) setThreshold(0);
+    if (threshold > 100) setThreshold(100);
+  }, [threshold]);
 
   const mockProfile = {
     username: "JohnDoe",
@@ -35,6 +41,11 @@ const Index = () => {
     if (userMessage.trim() !== "") {
       setChatHistory([...chatHistory, { sender: "user", message: userMessage }]);
       setUserMessage("");
+
+      if (autoReply && evaluateMessage(userMessage) > threshold) {
+        // Logic to send auto-reply
+        console.log("Auto-reply sent.");
+      }
     }
   };
 
@@ -215,9 +226,29 @@ const Index = () => {
           <ModalHeader>Settings</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            <Flex align="center">
+            <Flex align="center" mb={4}>
               <Text mr={2}>Automatic Replies</Text>
               <Switch isChecked={autoReply} onChange={handleToggleAutoReply} />
+            </Flex>
+            <Flex align="center">
+              <Text mr={2}>Threshold</Text>
+              <Slider
+                aria-label="slider-ex-1"
+                defaultValue={50}
+                min={0}
+                max={100}
+                step={1}
+                value={threshold}
+                onChange={(val) => setThreshold(val)}
+              >
+                <SliderMark value={threshold} mt="1" ml="-2.5" fontSize="sm">
+                  {threshold}
+                </SliderMark>
+                <SliderTrack>
+                  <SliderFilledTrack />
+                </SliderTrack>
+                <SliderThumb />
+              </Slider>
             </Flex>
           </ModalBody>
           <ModalFooter>
