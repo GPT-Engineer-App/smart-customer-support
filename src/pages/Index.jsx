@@ -153,7 +153,7 @@ const Index = () => {
           </VStack>
         </Box>
         {/* AI Assistance Area */}
-        <Box flex="1" p={4} overflowY="auto" maxHeight="400px">
+        <Box flex="1" p={4} overflowY="auto" height="100%">
           <Box p={4} borderBottom="1px solid #ccc" style={profileSectionStyle}>
             <Heading size="md" mb={2}>Customer Profile</Heading>
             <Text><strong>Username:</strong> {mockProfile.username}</Text>
