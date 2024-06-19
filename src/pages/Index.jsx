@@ -1,10 +1,19 @@
-import { Box, Container, Flex, VStack, Textarea, Button, Text } from "@chakra-ui/react";
+import { Box, Container, Flex, VStack, Textarea, Button, Text, Heading, List, ListItem } from "@chakra-ui/react";
 import { useState } from "react";
 
 const Index = () => {
   const [userMessage, setUserMessage] = useState("");
   const [chatHistory, setChatHistory] = useState([]);
   const [aiSuggestions, setAiSuggestions] = useState(["Hello! How can I assist you today?", "Can you provide more details?", "Thank you for reaching out!"]);
+
+  const mockProfile = {
+    username: "JohnDoe",
+    recentOrders: [
+      "Order #1234 - Widget A",
+      "Order #5678 - Widget B",
+      "Order #9101 - Widget C"
+    ]
+  };
 
   const handleSendMessage = () => {
     if (userMessage.trim() !== "") {
@@ -39,6 +48,16 @@ const Index = () => {
         </Box>
         {/* AI Assistance Area */}
         <Box flex="1" p={4}>
+          <Box p={4} borderBottom="1px solid #ccc">
+            <Heading size="md" mb={2}>Customer Profile</Heading>
+            <Text><strong>Username:</strong> {mockProfile.username}</Text>
+            <Heading size="sm" mt={4} mb={2}>Recent Orders</Heading>
+            <List spacing={2}>
+              {mockProfile.recentOrders.map((order, index) => (
+                <ListItem key={index}>{order}</ListItem>
+              ))}
+            </List>
+          </Box>
           <Text fontSize="xl" mb={4}>AI Suggestions</Text>
           <VStack spacing={4} align="stretch">
             {aiSuggestions.map((suggestion, index) => (
