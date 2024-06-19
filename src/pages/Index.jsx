@@ -101,11 +101,11 @@ const Index = () => {
         onClick={onOpen}
         aria-label="Settings"
       />
-      <Flex width="100%" height="80%" border="1px solid #ccc" borderRadius="md" overflow="hidden">
+      <Flex width="100%" height="100%" border="1px solid #ccc" borderRadius="md" overflow="hidden">
         {/* Chatbox Area */}
-        <Box flex="2" p={4} borderRight="1px solid #ccc">
+        <Box flex="2" p={4} borderRight="1px solid #ccc" height="100%">
           <VStack spacing={4} align="stretch" height="100%">
-            <Box flex="1" overflowY="auto" border="1px solid #ccc" borderRadius="md" p={2}>
+            <Box flex="1" overflowY="auto" border="1px solid #ccc" borderRadius="md" p={2} height="100%">
               {chatHistory.map((chat, index) => (
                 <Text
                   key={index}
@@ -153,7 +153,7 @@ const Index = () => {
           </VStack>
         </Box>
         {/* AI Assistance Area */}
-        <Box flex="1" p={4} overflowY="auto" maxHeight="400px">
+        <Box flex="1" p={4} overflowY="auto" height="100%">
           <Box p={4} borderBottom="1px solid #ccc" style={profileSectionStyle}>
             <Heading size="md" mb={2}>Customer Profile</Heading>
             <Text><strong>Username:</strong> {mockProfile.username}</Text>
