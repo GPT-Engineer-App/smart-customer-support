@@ -13,14 +13,15 @@ const Index = () => {
   ]);
   const [aiSuggestions, setAiSuggestions] = useState(["Hello! How can I assist you today?", "Can you provide more details?", "Thank you for reaching out!"]);
   const [knowledgeBase, setKnowledgeBase] = useState([
-    "Knowledge base info for suggestion 1",
-    "Knowledge base info for suggestion 2",
-    "Knowledge base info for suggestion 3"
+    { info: "Knowledge base info for suggestion 1", score: 0.9 },
+    { info: "Knowledge base info for suggestion 2", score: 0.7 },
+    { info: "Knowledge base info for suggestion 3", score: 0.8 }
   ]);
   const [sentimentData, setSentimentData] = useState([0, 1, 0, -1, 0, 1, 0]);
   const [userDemandAnalysis, setUserDemandAnalysis] = useState("User is looking for a refund due to a defective product.");
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [autoReply, setAutoReply] = useState(false);
+  const [threshold, setThreshold] = useState(0);
 
   const mockProfile = {
     username: "JohnDoe",
@@ -35,6 +36,13 @@ const Index = () => {
     if (userMessage.trim() !== "") {
       setChatHistory([...chatHistory, { sender: "user", message: userMessage }]);
       setUserMessage("");
+
+      if (autoReply) {
+        const suggestion = aiSuggestions.find((_, index) => knowledgeBase[index].score >= threshold);
+        if (suggestion) {
+          setChatHistory([...chatHistory, { sender: "user", message: userMessage }, { sender: "service", message: suggestion }]);
+        }
+      }
     }
   };
 
@@ -192,7 +200,7 @@ const Index = () => {
           <VStack spacing={4} align="stretch">
             {aiSuggestions.map((suggestion, index) => (
               <Box key={index} display="flex" alignItems="center">
-                <Tooltip label={knowledgeBase[index]} aria-label="Knowledge Base Info">
+                <Tooltip label={knowledgeBase[index].info} aria-label="Knowledge Base Info">
                   <Button variant="outline" size="sm" width="100%" onClick={() => setUserMessage(suggestion)}>
                     {suggestion}
                   </Button>
@@ -218,6 +226,10 @@ const Index = () => {
             <Flex align="center">
               <Text mr={2}>Automatic Replies</Text>
               <Switch isChecked={autoReply} onChange={handleToggleAutoReply} />
+            </Flex>
+            <Flex align="center" mt={4}>
+              <Text mr={2}>Threshold</Text>
+              <Input type="number" value={threshold} onChange={(e) => setThreshold(Number(e.target.value))} />
             </Flex>
           </ModalBody>
           <ModalFooter>
