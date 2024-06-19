@@ -49,6 +49,36 @@ const Index = () => {
     }
   };
 
+  const customerMessageStyle = {
+    backgroundColor: "#e0f7fa",
+    borderRadius: "10px",
+    padding: "8px",
+    marginBottom: "4px",
+    alignSelf: "flex-start",
+  };
+
+  const serviceMessageStyle = {
+    backgroundColor: "#fff3e0",
+    borderRadius: "10px",
+    padding: "8px",
+    marginBottom: "4px",
+    alignSelf: "flex-end",
+  };
+
+  const profileSectionStyle = {
+    backgroundColor: "#f1f1f1",
+    borderRadius: "10px",
+    padding: "16px",
+    marginBottom: "16px",
+  };
+
+  const orderListStyle = {
+    backgroundColor: "#ffffff",
+    borderRadius: "10px",
+    padding: "8px",
+    marginBottom: "4px",
+  };
+
   return (
     <Container maxW="container.xl" height="100vh" display="flex" flexDirection="column" justifyContent="center" alignItems="center">
       <Flex width="100%" height="80%" border="1px solid #ccc" borderRadius="md" overflow="hidden">
@@ -57,7 +87,11 @@ const Index = () => {
           <VStack spacing={4} align="stretch" height="100%">
             <Box flex="1" overflowY="auto" border="1px solid #ccc" borderRadius="md" p={2}>
               {chatHistory.map((chat, index) => (
-                <Text key={index} align={chat.sender === "user" ? "right" : "left"}>
+                <Text
+                  key={index}
+                  align={chat.sender === "user" ? "right" : "left"}
+                  style={chat.sender === "user" ? customerMessageStyle : serviceMessageStyle}
+                >
                   {chat.message}
                 </Text>
               ))}
@@ -100,13 +134,13 @@ const Index = () => {
         </Box>
         {/* AI Assistance Area */}
         <Box flex="1" p={4}>
-          <Box p={4} borderBottom="1px solid #ccc">
+          <Box p={4} borderBottom="1px solid #ccc" style={profileSectionStyle}>
             <Heading size="md" mb={2}>Customer Profile</Heading>
             <Text><strong>Username:</strong> {mockProfile.username}</Text>
             <Heading size="sm" mt={4} mb={2}>Recent Orders</Heading>
             <List spacing={2}>
               {mockProfile.recentOrders.map((order, index) => (
-                <ListItem key={index}>{order}</ListItem>
+                <ListItem key={index} style={orderListStyle}>{order}</ListItem>
               ))}
             </List>
           </Box>
