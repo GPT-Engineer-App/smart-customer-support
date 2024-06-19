@@ -1,4 +1,5 @@
 import { Box, Container, Flex, VStack, Textarea, Button, Text, Heading, List, ListItem, Tooltip, IconButton, Input, Icon, Modal, ModalOverlay, ModalContent, ModalHeader, ModalFooter, ModalBody, ModalCloseButton, Switch } from "@chakra-ui/react";
+import Chart from 'chart.js/auto';
 import { useState } from "react";
 import { FaMagic, FaMicrophone, FaImage, FaCog } from "react-icons/fa";
 import { Line } from 'react-chartjs-2';
