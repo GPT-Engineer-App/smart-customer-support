@@ -1,10 +1,16 @@
-import { Box, Container, Flex, VStack, Textarea, Button, Text, Heading, List, ListItem } from "@chakra-ui/react";
+import { Box, Container, Flex, VStack, Textarea, Button, Text, Heading, List, ListItem, Tooltip, IconButton } from "@chakra-ui/react";
 import { useState } from "react";
+import { FaMagic } from "react-icons/fa";
 
 const Index = () => {
   const [userMessage, setUserMessage] = useState("");
   const [chatHistory, setChatHistory] = useState([]);
   const [aiSuggestions, setAiSuggestions] = useState(["Hello! How can I assist you today?", "Can you provide more details?", "Thank you for reaching out!"]);
+  const [knowledgeBase, setKnowledgeBase] = useState([
+    "Knowledge base info for suggestion 1",
+    "Knowledge base info for suggestion 2",
+    "Knowledge base info for suggestion 3"
+  ]);
 
   const mockProfile = {
     username: "JohnDoe",
@@ -20,6 +26,11 @@ const Index = () => {
       setChatHistory([...chatHistory, { sender: "user", message: userMessage }]);
       setUserMessage("");
     }
+  };
+
+  const handleOptimizeResponse = (index) => {
+    // Logic to optimize the response
+    console.log("Optimizing response for suggestion:", aiSuggestions[index]);
   };
 
   return (
@@ -61,9 +72,20 @@ const Index = () => {
           <Text fontSize="xl" mb={4}>AI Suggestions</Text>
           <VStack spacing={4} align="stretch">
             {aiSuggestions.map((suggestion, index) => (
-              <Button key={index} variant="outline" size="sm" onClick={() => setUserMessage(suggestion)}>
-                {suggestion}
-              </Button>
+              <Box key={index} display="flex" alignItems="center">
+                <Tooltip label={knowledgeBase[index]} aria-label="Knowledge Base Info">
+                  <Button variant="outline" size="sm" onClick={() => setUserMessage(suggestion)}>
+                    {suggestion}
+                  </Button>
+                </Tooltip>
+                <IconButton
+                  icon={<FaMagic />}
+                  size="sm"
+                  ml={2}
+                  onClick={() => handleOptimizeResponse(index)}
+                  aria-label="Optimize Response"
+                />
+              </Box>
             ))}
           </VStack>
         </Box>
